@@ -50,8 +50,11 @@
 
 %%% End package options %%%
 
-% https://tex.stackexchange.com/questions/88614/how-do-you-detect-restricted-write18-support
+% Define some ifs
 \newif\if@gitver@ready
+\newif\if@gitver@success
+
+% https://tex.stackexchange.com/questions/88614/how-do-you-detect-restricted-write18-support
 
 \ifcase\pdf@shellescape
   \@gitver@readyfalse%
@@ -69,11 +72,26 @@
 	\immediate\write18{ git describe --match nopenopenope --always --long --dirty --abbrev=6 > \jobname_desc.aux }
 %
 	% Extract this into a new variable, gitVer
+	\@gitver@successfalse
 	\IfFileExists{\jobname_desc.aux}{
+		% Read the file into \gitVer
 		\CatchFileDef{\gitVer}{\jobname_desc.aux}{}
-	}{
-		\newcommand\gitVer{unknown}
+
+		% Check if the macro \gitVer is "\par ": this is its definition if the file had no contents
+		\def\@gitver@emptyfile{\par }
+
+		\ifx\gitVer\@gitver@emptyfile%
+			\PackageError{\@gitVerPkgName}{Git output is empty: is this folder a git repo?}{Make sure that this directory has had "git init" called in it, and has at least one commit.}
+		\else
+			\@gitver@successtrue
+		\fi
 	}
+
+	\if@gitver@success
+	\else
+		\PackageWarning{\@gitVerPkgName}{Git command failed: writing as "unknown"}%
+		\def\gitVer{unknown}
+	\fi
 %
 	% Make a box containing the date and version
 	% \newcommand{\versionBox}{\fbox{Manuscript version: \textit{\#\gitVer} - \today{} \currenttime{} }}
@@ -111,7 +129,7 @@
 			\fi
 		}
 	}%
-%
+
 	\if@gitver@pdfsubect%
 		\PackageInfo{\@gitVerPkgName}{Setting pdf subject metadata}%
 		% Put it into the metadata too
