@@ -7,8 +7,8 @@ URL: https://github.com/charlesbaynham/gitver
 License: LaTeX Project Public License 1.3c
 
 This package will get a description of the current git version of this
-document and store it in a command `\gitVer`. If memoir is installed, it
-will also add this to the document headers unless the option "noheader" is
+document and store it in a command `\gitVer`. If memoir or fancyhdr are in use, it
+will also add this to the document footers unless the option "noheader" is
 passed.
 
 It also defines a command `\versionBox{}` which outputs a box containing the

@@ -30,8 +30,8 @@ for \LaTeX{} projects}
 \section{Introduction}
 
 The \textsf{gitver} package gets a description of the current git version of this
-document and store it in a command |\gitVer|. If memoir is installed, it
-will also add this to the document headers unless the option "noheader" is
+document and store it in a command |\gitVer|. If memoir or fancyhdr are in use, it
+will also add this to the document footers unless the option "noheader" is
 passed.
 
 It also defines a command |\versionBox| which outputs a box containing the
@@ -93,5 +93,13 @@ If you include |gitver| without either of |memoir| or |fancyhdr| loaded, it will
 To customise the header / footer behavior, pass |noheader| and then use a combination of |\versionBox| and |\gitVer| to make your own headers/footers. 
 
 % subsection footers (end)
+
+\subsection{Metadata} % (fold)
+\label{sub:metadata}
+
+\DescribeMacro{nopdfinfo}
+By default, this package also adds the git tag to to pdf document's metadata under the subject field. To disable this behaviour, pass the option |nopdfinfo|. 
+
+% subsection metadata (end)
 
 \end{document}
