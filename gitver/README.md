@@ -2,7 +2,7 @@ Git Version (version 1.0)
 =========================
 
 URL: https://github.com/charlesbaynham/gitver
-(c) Charles Baynham 2018
+(c) Charles Baynham 2019
 
 License: LaTeX Project Public License 1.3c
 
@@ -26,4 +26,4 @@ otherwise your version will always be "dirty". Try the `.gitignore` file from
 one.
 
 The package is released 'as is' with no warranty under the LaTeX Project Public
-License, version 1.3.
+License, version 1.3c.
