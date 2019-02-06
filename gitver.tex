@@ -1,0 +1,97 @@
+%!TEX options = --shell-escape
+%
+% This command causes LatexTools for SublimeText to compile in shell escape mode. 
+%
+% If you're not using LatexTools to compile, you will need to enable shell
+% escape on your editor some other way
+
+\documentclass[a4paper]{ltxdoc}
+
+\usepackage{fancyhdr}
+\pagestyle{fancy}
+
+\usepackage{gitver}
+
+
+\begin{document}
+
+\title{\textsf{gitver} -- Git version tags \\ 
+for \LaTeX{} projects}
+\author{Charles Baynham}
+\date{2019/02/06 (v\,1.0)}
+\MaintainedBy{%
+	This file is maintained by Charles Baynham.\\%
+	Bug reports can be opened at\\%
+	\url{https://github.com/charlesbaynham/gitver}.
+}
+
+\maketitle
+
+\section{Introduction}
+
+The \textsf{gitver} package gets a description of the current git version of this
+document and store it in a command |\gitVer|. If memoir is installed, it
+will also add this to the document headers unless the option "noheader" is
+passed.
+
+It also defines a command |\versionBox| which outputs a box containing the
+version and date of compilation
+
+For this to work, you must have git installed and available on the command
+line, this document must be part of a git repository, and latex must be
+running in "shell escape" mode. This can be enabled by passing \textsf{--shell-escape}
+on the command line when compiling your docuemnt, or will be available in the
+options of whatever GUI you're using (try Googling).
+
+Note that it's a good idea to tell git to ignore all the latex auxilary files,
+otherwise your version will always be ``dirty''. Try the \textsf{.gitignore} file from
+\url{https://www.gitignore.io/api/latex} if you don't already have
+one.
+
+The package is released ``as is'' with no warranty under the LaTeX Project Public
+License, version 1.3.
+
+\section{Usage}
+
+\subsection{Macros} % (fold)
+\label{sub:macros}
+
+% subsection macros (end)
+
+\DescribeMacro{\gitVer}
+%
+The main point of this package, the command |\gitVer| prints a string of text describing the current revision of this git repository. Use like so:
+\begin{quote}
+	The current version of this repository is ``|\gitVer{}|''.
+\end{quote}
+which compiles to
+\begin{quote}
+	The current version of this repository is ``\gitVer{}''.
+\end{quote}
+
+\DescribeMacro{\versionBox}
+Alternatively, you can use a |\versionBox|, most commonly in the footer:
+\begin{quote}
+	|\versionBox{}|
+\end{quote}
+%
+gives the output:
+\vspace{3mm}
+
+\versionBox{}
+
+\subsection{Footers} % (fold)
+\label{sub:footers}
+
+By default, \textsf{gitver} will try to place a |\versionBox| into the footer of your document. If you're using the |memoir| class or the |fancyhdr| package, this will happen automatically. This document has these footers enabled: have a look at the bottom of this page for an example. 
+
+\DescribeMacro{noheader}
+You can disable the headers by adding the option |noheader| to the package call. 
+
+If you include |gitver| without either of |memoir| or |fancyhdr| loaded, it will complain. To suppress this complaint, pass the |noheader| option. 
+
+To customise the header / footer behavior, pass |noheader| and then use a combination of |\versionBox| and |\gitVer| to make your own headers/footers. 
+
+% subsection footers (end)
+
+\end{document}

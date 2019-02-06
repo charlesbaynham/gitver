@@ -1,0 +1,127 @@
+% gitVer
+% 
+% (c) Charles Baynham 2018
+%
+%% This program can be redistributed and/or modified under the terms
+%% of the LaTeX Project Public License Distributed from CTAN archives
+%% in directory macros/latex/base/lppl.txt.
+%
+% This package will get a description of the current git version of this
+% document and store it in a command "\gitVer". If memoir is installed, it
+% will also add this to the document headers unless the option "noheader" is
+% passed.
+% 
+% It also defines a command "\versionBox{}" which outputs a box containing the
+% version and date of compilation
+%
+% For this to work, you must have git installed and available on the command
+% line, and latex must be running in "shell escape" mode.
+%
+
+\NeedsTeXFormat{LaTeX2e}
+\def\@gitVerPkgName{gitver}
+\ProvidesPackage{\@gitVerPkgName}
+  [2018/09/10 v0.01 Access current git version and optionally add it to document headers]
+
+\RequirePackage{hyperref}
+\RequirePackage{catchfile}
+\RequirePackage{pdftexcmds}
+\RequirePackage{datetime}
+
+%%% Package options %%%
+
+%% 'noheader' option
+\newif\if@gitver@noheader
+\@gitver@noheaderfalse
+\DeclareOption{noheader}{
+	\@gitver@noheadertrue
+	\PackageInfo{\@gitVerPkgName}{Header info disabled}%
+}
+%
+%% 'nopdfinfo' option
+\newif\if@gitver@pdfsubect
+\@gitver@pdfsubecttrue
+\DeclareOption{nopdfinfo}{
+	\@gitver@pdfsubectfalse
+	\PackageInfo{\@gitVerPkgName}{Metadata info disabled}%
+}
+%
+\ProcessOptions\relax
+
+%%% End package options %%%
+
+% https://tex.stackexchange.com/questions/88614/how-do-you-detect-restricted-write18-support
+\newif\if@gitver@ready
+
+\ifcase\pdf@shellescape
+  \@gitver@readyfalse%
+  \or
+  \@gitver@readytrue%
+  \or
+  \@gitver@readyfalse%
+ \fi
+
+\if@gitver@ready
+	\PackageInfo{\@gitVerPkgName}{Shell escape enabled}%
+%
+	% Get current git version
+	% Note: this command requires (a) git installed and (b) shell escape in latex enabled
+	\immediate\write18{ git describe --match nopenopenope --always --long --dirty --abbrev=6 > \jobname_desc.aux }
+%
+	% Extract this into a new variable, gitVer
+	\IfFileExists{\jobname_desc.aux}{
+		\CatchFileDef{\gitVer}{\jobname_desc.aux}{}
+	}{
+		\newcommand\gitVer{unknown}
+	}
+%
+	% Make a box containing the date and version
+	% \newcommand{\versionBox}{\fbox{Manuscript version: \textit{\#\gitVer} - \today{} \currenttime{} }}
+	\newcommand{\versionBox}{\fbox{Manuscript version: \textit{\#\gitVer} - \today{} \currenttime{} }}
+%
+	% If we're using memoir, put the tag into into the header
+%
+	\@ifclassloaded{memoir}%
+	  {%
+	  	\PackageInfo{\@gitVerPkgName}{Memoir detected}%
+	  	\if@gitver@noheader%
+		\else%
+			% Add the git version and the date/time to the header / footer
+			\PackageInfo{\@gitVerPkgName}{Adding git info to header}%
+			\makeoddfoot{Ruled}{\versionBox}{}{\thepage}
+			\makeevenfoot{Ruled}{\thepage}{}{\versionBox}
+			\makeevenhead {Ruled}{\scshape\leftmark}{}{\textit{\#\gitVer}}
+			\makeoddhead {Ruled}{\textit{\#\gitVer}}{}{\rightmark}
+		\fi%
+	}{%
+		% If we're not using memoir, but we are using fancyhdr, also add to the header
+		\@ifpackageloaded{fancyhdr}
+		{%
+			\if@gitver@noheader%
+			\else%
+				\fancyfoot[L]{\versionBox}
+				\fancyfoot[C]{}
+				\fancyfoot[R]{\thepage}
+			\fi
+		}{%
+			% No memoir or fancyhdr
+			\if@gitver@noheader%
+			\else%
+				\PackageWarning{\@gitVerPkgName}{Not changing the document headers because you're not using "memoir" or "fancyhdr" package. Pass "noheader" to suppress this warning, or use one of these classes / packages.}
+			\fi
+		}
+	}%
+%
+	\if@gitver@pdfsubect%
+		\PackageInfo{\@gitVerPkgName}{Setting pdf subject metadata}%
+		% Put it into the metadata too
+		\hypersetup{
+			pdfsubject={Version \#\gitVer{}}
+		}%
+	\fi%
+\else
+	\PackageError{\@gitVerPkgName}{Shell escape not enabled}{Latex failed to write a file. This is probably because shell-escape mode is disabled: you must turn this on!}
+
+	\def\versionBox{???}
+	\def\gitVer{unknown}
+\fi
