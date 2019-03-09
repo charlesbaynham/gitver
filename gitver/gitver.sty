@@ -73,10 +73,10 @@
 	\@gitver@successfalse
 	\IfFileExists{\jobname_desc.aux}{
 		% Read the file into \gitVer
-		\CatchFileDef{\gitVer}{\jobname_desc.aux}{}
+		\CatchFileDef{\gitVer}{\jobname_desc.aux}{\endlinechar=-1}
 
-		% Check if the macro \gitVer is "\par ": this is its definition if the file had no contents
-		\def\@gitver@emptyfile{\par }
+		% Check if the macro \gitVer is empty: this is its definition if the file had no contents
+		\def\@gitver@emptyfile{}
 
 		\ifx\gitVer\@gitver@emptyfile%
 			\PackageError{\@gitVerPkgName}{Git output is empty: is this folder a git repo?}{Make sure that this directory has had "git init" called in it, and has at least one commit.}
