@@ -1,4 +1,4 @@
-Git Version (version 1.0)
+Git Version (version 1.1)
 =========================
 
 URL: https://github.com/charlesbaynham/gitver
