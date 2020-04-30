@@ -18,7 +18,7 @@
 \title{\textsf{gitver} -- Git version tags \\ 
 for \LaTeX{} projects}
 \author{Charles Baynham}
-\date{2019/02/06 (v\,1.0)}
+\date{2020/04/30 (v\,1.1)}
 \MaintainedBy{%
 	This file is maintained by Charles Baynham.\\%
 	Bug reports can be opened at\\%
@@ -30,8 +30,8 @@ for \LaTeX{} projects}
 \section{Introduction}
 
 The \textsf{gitver} package gets a description of the current git version of this
-document and store it in a command |\gitVer|. If memoir or fancyhdr are in use, it
-will also add this to the document footers unless the option "noheader" is
+document and stores it in a command |\gitVer|. If memoir or fancyhdr are in use, it
+will also add this to the document footers unless the option |noheader| is
 passed.
 
 It also defines a command |\versionBox| which outputs a box containing the
@@ -39,8 +39,8 @@ version and date of compilation.
 
 For this to work, you must have git installed and available on the command
 line, this document must be part of a git repository, and latex must be
-running in "shell escape" mode. This can be enabled by passing \textsf{--shell-escape}
-on the command line when compiling your docuemnt, or will be available in the
+running in ``shell escape'' mode. This can be enabled by passing \textsf{--shell-escape}
+on the command line when compiling your document, or will be available in the
 options of whatever GUI you're using (try Googling).
 
 Note that it's a good idea to tell git to ignore all the latex auxilary files,
@@ -60,7 +60,8 @@ License, version 1.3.
 
 \DescribeMacro{\gitVer}
 %
-The main point of this package, the command |\gitVer| prints a string of text describing the current revision of this git repository. Use like so:
+The main point of this package, the command |\gitVer| prints a string of text
+describing the current revision of this git repository. Use like so:
 \begin{quote}
 	The current version of this repository is ``|\gitVer{}|''.
 \end{quote}
@@ -83,22 +84,28 @@ gives the output:
 \subsection{Footers} % (fold)
 \label{sub:footers}
 
-By default, \textsf{gitver} will try to place a |\versionBox| into the footer of your document. If you're using the |memoir| class or the |fancyhdr| package, this will happen automatically. This document has these footers enabled: have a look at the bottom of this page for an example. 
+By default, \textsf{gitver} will try to place a |\versionBox| into the footer of
+your document. If you're using the |memoir| class or the |fancyhdr| package,
+this will happen automatically. This document has these footers enabled: have a
+look at the bottom of this page for an example. 
 
 \DescribeMacro{noheader}
 You can disable the headers by adding the option |noheader| to the package call. 
 
-If you include |gitver| without either of |memoir| or |fancyhdr| loaded, it will complain. To suppress this complaint, pass the |noheader| option. 
+If you include |gitver| without either of |memoir| or |fancyhdr| loaded, it will
+complain. To suppress this complaint, pass the |noheader| option. 
 
-To customise the header / footer behavior, pass |noheader| and then use a combination of |\versionBox| and |\gitVer| to make your own headers/footers. 
+To customise the header / footer behavior, pass |noheader| and then use a
+combination of |\versionBox| and |\gitVer| to make your own headers/footers. 
 
 % subsection footers (end)
 
 \subsection{Metadata} % (fold)
 \label{sub:metadata}
 
-\DescribeMacro{nopdfinfo}
-By default, this package also adds the git tag to to pdf document's metadata under the subject field. To disable this behaviour, pass the option |nopdfinfo|. 
+\DescribeMacro{nopdfinfo} By default, this package also adds the git tag to the
+pdf document's metadata under the subject field. To disable this behaviour, pass
+the option |nopdfinfo|. 
 
 % subsection metadata (end)
 
