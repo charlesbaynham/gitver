@@ -1,8 +1,8 @@
-Git Version (version 1.1)
+Git Version (version 1.2)
 =========================
 
 URL: https://github.com/charlesbaynham/gitver
-(c) Charles Baynham 2019
+(c) Charles Baynham 2020
 
 License: LaTeX Project Public License 1.3c
 

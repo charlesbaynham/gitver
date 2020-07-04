@@ -2,3 +2,6 @@
  * initial release
 2020-04-30 - v1.1
  * Clean up docs and remove extra space from hash output
+2020-07-04 - v1.2
+ * Use datetime2 instead of datetime to reduce dependancy burden
+   and display dates in ISO format
