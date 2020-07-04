@@ -24,7 +24,7 @@
 \RequirePackage{hyperref}
 \RequirePackage{catchfile}
 \RequirePackage{pdftexcmds}
-\RequirePackage{datetime}
+\RequirePackage{datetime2}
 
 %%% Package options %%%
 
@@ -92,8 +92,7 @@
 	\fi
 %
 	% Make a box containing the date and version
-	% \newcommand{\versionBox}{\fbox{Manuscript version: \textit{\#\gitVer} - \today{} \currenttime{} }}
-	\newcommand{\versionBox}{\fbox{Manuscript version: \textit{\#\gitVer} - \today{} \currenttime{} }}
+	\newcommand{\versionBox}{\fbox{Manuscript version: \textit{\#\gitVer} - \DTMnow{} }}
 %
 	% If we're using memoir, put the tag into into the header
 %
