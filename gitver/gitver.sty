@@ -1,6 +1,6 @@
 % gitVer
 % 
-% (c) Charles Baynham 2018
+% (c) Charles Baynham 2020
 %
 % License: LaTeX Project Public License 1.3c
 %
@@ -19,12 +19,18 @@
 \NeedsTeXFormat{LaTeX2e}
 \def\@gitVerPkgName{gitver}
 \ProvidesPackage{\@gitVerPkgName}
-  [2020/07/04 v1.2 Access current git version and optionally add it to document headers]
+  [2020/10/30 v1.3 Access current git version and optionally add it to document headers]
 
 \RequirePackage{hyperref}
 \RequirePackage{catchfile}
 \RequirePackage{pdftexcmds}
 \RequirePackage{datetime2}
+
+% Support lualatex by reinstating the \write18 command
+\RequirePackage{ifluatex}
+\ifluatex
+	\RequirePackage{shellesc}
+\fi
 
 %%% Package options %%%
 

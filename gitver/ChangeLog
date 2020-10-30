@@ -5,3 +5,5 @@
 2020-07-04 - v1.2
  * Use datetime2 instead of datetime to reduce dependancy burden
    and display dates in ISO format
+2020-10-30 - v1.3
+ * Support lualatex
