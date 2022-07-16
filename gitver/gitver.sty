@@ -25,6 +25,25 @@
 \RequirePackage{catchfile}
 \RequirePackage{pdftexcmds}
 \RequirePackage{datetime2}
+\RequirePackage{ifthen}
+\RequirePackage{xparse}
+
+% Define a command to get environmental variables
+% Thanks to egreg at https://tex.stackexchange.com/questions/62010/can-i-access-system-environment-variables-from-latex-for-instance-home
+\ExplSyntaxOn
+\NewDocumentCommand{\getenv}{om}
+ {
+  \sys_get_shell:nnN { kpsewhich ~ --var-value ~ #2 } { } \l_tmpa_tl %
+  \tl_trim_spaces:N \l_tmpa_tl %
+  \IfNoValueTF { #1 } %
+   {%
+    \tl_use:N \l_tmpa_tl%
+   }%
+   {%
+    \tl_set_eq:NN #1 \l_tmpa_tl%
+   }%
+ }
+\ExplSyntaxOff
 
 % Support lualatex by reinstating the \write18 command
 \RequirePackage{ifluatex}
@@ -85,7 +104,7 @@
 		\def\@gitver@emptyfile{}
 
 		\ifx\gitVer\@gitver@emptyfile%
-			\PackageError{\@gitVerPkgName}{Git output is empty: is this folder a git repo?}{Make sure that this directory has had "git init" called in it, and has at least one commit.}
+			\PackageWarning{\@gitVerPkgName}{Git output is empty: is this folder a git repo? Make sure that this directory has had "git init" called in it, has at least one commit, and that git is installed.}
 		\else
 			\@gitver@successtrue
 		\fi
@@ -93,8 +112,23 @@
 
 	\if@gitver@success
 	\else
-		\PackageWarning{\@gitVerPkgName}{Git command failed: writing as "unknown"}%
-		\def\gitVer{unknown}
+	    % Look for "CLSI" environmental variable: this stands for Common Latex Service
+        % Interface, and is set to "1" in web builders like Overleaf.com
+        \getenv[\CLSI]{CLSI}
+        % Check if CLSI == 1 (see https://tex.stackexchange.com/a/306500)
+        \ifnum1=0\CLSI\relax 
+            \PackageWarning{\@gitVerPkgName}{Running on a Common Latex Service %
+                Interface without Git: writing version as "CLSI"}%
+		    \def\gitVer{CLSI}
+        \else 
+            \PackageError{\@gitVerPkgName}{Git command failed: writing as "unknown"}{%
+                Calling git failed, and your system did not identify itself as a 
+                Common Latex Service Interface (e.g. overleaf.com). Make sure that git
+                is installed and that this file is in a repository which has at least
+                one commit. 
+            }%
+		    \def\gitVer{unknown}
+        \fi
 	\fi
 %
 	% Make a box containing the date and version

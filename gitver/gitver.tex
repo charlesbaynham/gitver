@@ -43,6 +43,10 @@ running in ``shell escape'' mode. This can be enabled by passing \textsf{--shell
 on the command line when compiling your document, or will be available in the
 options of whatever GUI you're using (try Googling).
 
+Note that online Latex editors like Overleaf.com often do not have git installed.
+Gitver will detect these by the precense of the environmental variable "CLSI" 
+and will display the version as "CLSI" instead. 
+
 Note that it's a good idea to tell git to ignore all the latex auxilary files,
 otherwise your version will always be ``dirty''. Try the \textsf{.gitignore} file from
 \url{https://www.gitignore.io/api/latex} if you don't already have
