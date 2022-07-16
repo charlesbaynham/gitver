@@ -7,3 +7,5 @@
    and display dates in ISO format
 2020-10-30 - v1.3
  * Support lualatex
+2022-07-16 - v1.4
+ * Detect running in online builders via "CLSI" environmental variable

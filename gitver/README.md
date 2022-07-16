@@ -2,7 +2,7 @@ Git Version (version 1.3)
 =========================
 
 URL: https://github.com/charlesbaynham/gitver
-(c) Charles Baynham 2020
+(c) Charles Baynham 2022
 
 License: LaTeX Project Public License 1.3c
 
